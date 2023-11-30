@@ -1,5 +1,7 @@
 # django-microapi
 
+[![Documentation Status](https://readthedocs.org/projects/django-microapi/badge/?version=latest)](https://django-microapi.readthedocs.io/en/latest/?badge=latest)
+
 A tiny library to make writing CBV-based APIs easier in Django.
 
 Essentially, this just provides some sugar on top of the plain old `django.views.generic.base.View` class, all with the intent of making handling JSON APIs easier (without the need for a full framework).
@@ -73,7 +75,7 @@ I've long had a place in my heart for the simplicity of Django's function-based 
 
 ## API Docs
 
-TBD.
+https://django-microapi.rtfd.io/
 
 
 ## License
