@@ -11,3 +11,6 @@ set dotenv-load := false
     pipenv run twine upload dist/*
 
 @publish: build pypi
+
+@docs:
+    cd docs && make html

@@ -60,6 +60,22 @@ $ pip install django-microapi
 ```
 
 
+## Rationale
+
+There are a lot of API frameworks out there (hell, I [built](https://tastypieapi.org/) [two](https://github.com/toastdriven/restless) of them). But for many tasks, they're either [overkill](https://en.wikipedia.org/wiki/HATEOAS) or just too opinionated.
+
+So `django-microapi` is kind of the antithesis to those. With the exception of a tiny extension to `View` for nicer errors, it doesn't call **ANYTHING** automatically. Other than being JSON-based, it doesn't have opinions on serialization, or validation, or URL structures.
+
+You write the endpoints you want, and `microapi` brings some conveniences to the table to make writing that endpoint as simple as possible _without_ assumptions.
+
+I've long had a place in my heart for the simplicity of Django's function-based views, as well as the conveniences of `django.shortcuts`. `microapi` tries to channel that love/simplicity.
+
+
+## API Docs
+
+TBD.
+
+
 ## License
 
 New BSD
