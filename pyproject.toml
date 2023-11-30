@@ -1,0 +1,38 @@
+[project]
+name = "django-microapi"
+version = "1.0.0"
+description = "A tiny library to make writing CBV-based APIs easier in Django."
+authors = [
+    {name = "Daniel Lindsley", email = "daniel@toastdriven.com"},
+]
+license = {text = "BSD-3-Clause"}
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+    "django",
+]
+keywords = [
+    "django",
+    "json",
+    "api",
+]
+classifiers = [
+    "Framework :: Django",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Repository = "https://github.com/toastdriven/django-microapi.git"
+Homepage = "https://github.com/toastdriven/django-microapi"
+Issues = "https://github.com/toastdriven/django-microapi/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["microapi*"]
+exclude = ["microapi.tests*"]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"

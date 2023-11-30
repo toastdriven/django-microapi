@@ -1,0 +1,12 @@
+*.DS_Store
+
+env
+__pycache__
+
+.env
+Pipfile
+Pipfile.lock
+
+build
+dist
+**/*.egg-info
