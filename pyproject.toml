@@ -31,7 +31,7 @@ Issues = "https://github.com/toastdriven/django-microapi/issues"
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["microapi*"]
-exclude = ["microapi.tests*"]
+# exclude = ["tests*"]
 
 [build-system]
 requires = ["setuptools"]

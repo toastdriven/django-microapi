@@ -24,6 +24,8 @@ JSON APIs easier (without the need for a full framework).
 
    api/views
    api/serializers
+   api/tests
+   api/http
    api/exceptions
 
 

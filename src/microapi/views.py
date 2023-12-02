@@ -8,6 +8,7 @@ from .exceptions import (
     # InvalidFieldError,
     # DataValidationError,
 )
+from . import http
 from .serializers import ModelSerializer
 
 
@@ -121,20 +122,21 @@ class ApiView(View):
         except ValueError:
             raise ApiError("Invalid JSON payload provided.")
 
-    def render(self, data, status_code=200):
+    def render(self, data, status_code=http.OK):
         """
         Creates a JSON response.
 
         Args:
             data (dict): The data to return as JSON
-            status_code (int): The desired HTTP status code. Default is `200`.
+            status_code (int): The desired HTTP status code. Default is
+                `http.OK` (a.k.a. `200`).
 
         Returns:
             JsonResponse: The response for Django to provide to the user
         """
         return JsonResponse(data, status=status_code)
 
-    def render_error(self, msgs, status_code=500):
+    def render_error(self, msgs, status_code=http.APP_ERROR):
         """
         Creates an error JSON response.
 
@@ -142,7 +144,8 @@ class ApiView(View):
             msgs (list|str): A list of message(s) to provide to the user. If a
                 single string is provided, this will automatically get turned
                 into a list.
-            status_code (int): The desired HTTP status code. Default is `500`.
+            status_code (int): The desired HTTP status code. Default is
+                `http.APP_ERROR` (a.k.a. `500`).
 
         Returns:
             JsonResponse: The error response for Django to provide to the user
