@@ -19,7 +19,7 @@ from .views import ApiView
 
 __author__ = "Daniel Lindsley"
 __license__ = "New BSD"
-__version__ = "1.1.0"
+__version__ = "1.2.0-alpha"
 
 # For convenience...
 __ALL__ = [

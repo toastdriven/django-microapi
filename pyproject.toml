@@ -1,6 +1,6 @@
 [project]
 name = "django-microapi"
-version = "1.1.0"
+version = "1.2.0-alpha"
 description = "A tiny library to make writing CBV-based APIs easier in Django."
 authors = [
     {name = "Daniel Lindsley", email = "daniel@toastdriven.com"},
