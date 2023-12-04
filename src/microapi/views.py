@@ -1,6 +1,8 @@
 import json
 
 from django.http import JsonResponse
+from django.utils.decorators import classonlymethod
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
 
 from .exceptions import (
@@ -71,6 +73,11 @@ class ApiView(View):
         "patch",
         "delete",
     ]
+
+    @classonlymethod
+    def as_view(cls, **initkwargs):
+        view = super().as_view(cls, **initkwargs)
+        return csrf_exempt(view)
 
     def dispatch(self, request, *args, **kwargs):
         """
