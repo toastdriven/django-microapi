@@ -14,3 +14,8 @@ set dotenv-load := false
 
 @docs:
     cd docs && make html
+
+@test:
+    pipenv install
+    pipenv install -e .
+    pipenv run bash -c "cd test && ./manage.py test"

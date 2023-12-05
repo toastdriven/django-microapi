@@ -77,6 +77,15 @@ I've long had a place in my heart for the simplicity of Django's function-based 
 https://django-microapi.rtfd.io/
 
 
+## Testing
+
+To run the tests, you'll need both [Pipenv](https://pipenv.pypa.io/en/latest/), and [Just](https://just.systems/) installed.
+
+```shell
+$ just test
+```
+
+
 ## License
 
 New BSD
