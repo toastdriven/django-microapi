@@ -1,6 +1,8 @@
 import json
 
 from django.http import JsonResponse
+from django.utils.decorators import classonlymethod
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
 
 from .exceptions import (
@@ -71,6 +73,12 @@ class ApiView(View):
         "patch",
         "delete",
     ]
+    serializer = ModelSerializer()
+
+    @classonlymethod
+    def as_view(cls, **initkwargs):
+        view = super().as_view(**initkwargs)
+        return csrf_exempt(view)
 
     def dispatch(self, request, *args, **kwargs):
         """
@@ -118,7 +126,7 @@ class ApiView(View):
                 raise ApiError("Invalid Content-type provided.")
 
         try:
-            return json.loads(request.body.read())
+            return json.loads(request.body)
         except ValueError:
             raise ApiError("Invalid JSON payload provided.")
 
@@ -197,8 +205,7 @@ class ApiView(View):
         Returns:
             dict: The data
         """
-        serializer = ModelSerializer()
-        return serializer.to_dict(obj)
+        return self.serializer.to_dict(obj)
 
     def serialize_many(self, objs):
         """

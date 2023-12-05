@@ -92,12 +92,12 @@ class ModelSerializer:
         """
         field_list = self.collect_field_names(model)
 
-        for key, value in data.iteritems():
+        for key, value in data.items():
             if strict and key not in field_list:
                 raise InvalidFieldError(
                     f"{key} not found on {model.__class__.__name__}"
                 )
 
-            setattr(model, value)
+            setattr(model, key, value)
 
         return model

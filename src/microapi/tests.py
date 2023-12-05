@@ -4,6 +4,7 @@ from django.test import (
     RequestFactory,
     TestCase,
 )
+from django.test.client import MULTIPART_CONTENT
 
 from . import http
 
@@ -23,7 +24,12 @@ def assert_status_code(resp, status_code):
     Raises:
         AssertionError: If the expected status code does not match the response.
     """
-    assert resp.status_code == status_code
+    # We try/except here, so that we can add more details when used with the
+    # Django `TestCase` below.
+    try:
+        assert resp.status_code == status_code
+    except AssertionError:
+        raise AssertionError(f"{resp.status_code} != {status_code}")
 
 
 def assert_ok(resp):
@@ -179,7 +185,7 @@ def check_response(resp):
     """
     assert "application/json" in resp.headers.get("Content-Type", "")
 
-    body_data = resp.body.read()
+    body_data = resp.content
 
     if len(body_data):
         return json.loads(body_data)
@@ -187,7 +193,7 @@ def check_response(resp):
     return {}
 
 
-def create_request(url, method="GET", headers=None, data=None, factory=None):
+def create_request(url, method="GET", headers=None, data=None, user=None, factory=None):
     """
     Creates a `Request` object (via a `django.test.RequestFactory`).
 
@@ -197,6 +203,7 @@ def create_request(url, method="GET", headers=None, data=None, factory=None):
         headers (dict): The HTTP headers on the request. Default is `None`,
             which turns into basic JSON headers.
         data (dict): The JSON data to send. Default is `None`.
+        user (User): (Optional) Logged in user. Default is `None`.
         factory (RequestFactory): (Optional) Allows for providing a different
             `RequestFactory`. Default is `django.test.RequestFactory`.
 
@@ -229,11 +236,17 @@ def create_request(url, method="GET", headers=None, data=None, factory=None):
     elif method.lower() == "trace":
         req_method = factory.trace
 
-    return req_method(
+    req = req_method(
         url,
         data=data,
+        content_type=headers.get("Content-Type", MULTIPART_CONTENT),
         headers=headers,
     )
+
+    if user is not None:
+        req.user = user
+
+    return req
 
 
 class ApiTestCase(TestCase):
@@ -249,29 +262,46 @@ class ApiTestCase(TestCase):
         super().setUp()
         self.factory = RequestFactory()
 
-    def make_request(self, view_class, url, method="GET", headers=None, data=None):
+    def create_request(self, url, method="GET", headers=None, data=None, user=None):
         """
-        Creates a `Request` object and simulates the request/response cycle
-        against a given `View` class.
+        Creates a `Request` object.
 
         Args:
-            view_class (View): The view class that should be tested.
             url (str): The URL as entered by the user.
             method (str): The HTTP method used. Case-insensitive.
                 Default is `GET`.
             headers (dict): The HTTP headers on the request. Default is `None`,
                 which turns into basic JSON headers.
             data (dict): The JSON data to send. Default is `None`.
-            factory (RequestFactory): (Optional) Allows for providing a
-                different `RequestFactory`.
-                Default is `django.test.RequestFactory`.
+            user (User): (Optional) Logged in user. Default is `None`.
 
         Returns:
             Response: The received response object from calling the view.
         """
-        req = self.create_request(url, method=method, headers=headers, data=data)
-        view = view_class.as_view()
-        return view(req)
+        return create_request(
+            url,
+            method=method,
+            headers=headers,
+            data=data,
+            user=user,
+            factory=self.factory,
+        )
+
+    def make_request(self, view_class, request, *args, **kwargs):
+        """
+        Simulates the request/response cycle against an ApiView.
+
+        Args:
+            view_class (ApiView): The class to test against.
+            request (Request): The request to be sent.
+            *args (list): (Optional) Any positional URLconf arguments.
+            **kwargs (dict): (Optional) Any keyword URLconf arguments.
+
+        Returns:
+            HttpResponse: The received response.
+        """
+        view_func = view_class.as_view()
+        return view_func(request, *args, **kwargs)
 
     def assertStatusCode(self, resp, status_code):
         """
@@ -429,4 +459,4 @@ class ApiTestCase(TestCase):
             ValueError: If a body is present, but is not valid JSON.
         """
         resp_data = check_response(resp)
-        assert data == data
+        self.assertEqual(resp_data, data)
