@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.abspath("../src"))
 project = "django-microapi"
 copyright = "2023, Daniel Lindsley"
 author = "Daniel Lindsley"
-release = "1.2.0-alpha"
+release = "1.2.0"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
