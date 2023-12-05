@@ -49,8 +49,7 @@ Usage
 
             # Use the included `ModelSerializer` to load the user-provided data
             # into a new `BlogPost`.
-            serializer = ModelSerializer()
-            post = serializer.from_dict(BlogPost(), data)
+            post = self.serializer.from_dict(BlogPost(), data)
             # Don't forget to save!
             post.save()
 
