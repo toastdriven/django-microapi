@@ -17,6 +17,8 @@ JSON APIs easier (without the need for a full framework).
    :caption: Usage:
 
    usage/quickstart
+   usage/tutorial
+   usage/testing
 
 .. toctree::
    :maxdepth: 2

@@ -3,3 +3,4 @@
 
 .. automodule:: microapi.views
    :members:
+   :undoc-members:

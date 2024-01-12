@@ -14,10 +14,12 @@ The only requirement is Django (most recent releases should work fine).
 Usage
 -----
 
-::
+Assuming a relatively simple blog application, with an existing ``BlogPost``
+model, we can drop the following code into a ``views.py`` (or similar)::
 
     from django.contrib.auth.decorators import login_required
 
+    # We pull in two useful classes from `microapi`.
     from microapi import ApiView, ModelSerializer
 
     from .models import BlogPost
@@ -57,3 +59,15 @@ Usage
                 "success": True,
                 "post": self.serialize(post),
             })
+
+Then you can hook this up in your URLconf (``urls.py``) in a familiar way::
+
+    from django.urls import path
+
+    # Just import your class...
+    from .views import BlogPostView
+
+    urlpatterns = [
+        # ...then hook it up like any other CBV.
+        path("api/v1/posts/", BlogPostView.as_view()),
+    ]

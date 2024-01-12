@@ -12,6 +12,7 @@ Essentially, this just provides some sugar on top of the plain old `django.views
 ```python
 from django.contrib.auth.decorators import login_required
 
+# We pull in two useful classes from `microapi`.
 from microapi import ApiView, ModelSerializer
 
 from .models import BlogPost

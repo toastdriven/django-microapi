@@ -65,7 +65,9 @@ class ApiView(View):
 
     """
 
+    #: Control whether we handle exceptions or allow them to bubble up to Django.
     bubble_exceptions = False
+    #: Control which HTTP methods are allowed to be responded to.
     http_method_names = [
         "get",
         "post",
@@ -73,6 +75,7 @@ class ApiView(View):
         "patch",
         "delete",
     ]
+    #: What serializer we use by default.
     serializer = ModelSerializer()
 
     @classonlymethod
