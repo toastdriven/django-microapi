@@ -3,3 +3,4 @@
 
 .. automodule:: microapi.http
    :members:
+   :undoc-members:
