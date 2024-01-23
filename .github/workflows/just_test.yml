@@ -11,18 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - if: ${{ startsWith(matrix.os, 'ubuntu') }}
-        run: |
-          snap --version || true
-          crate --version || true
-          makedeb --version || true
-          mist --version || true
-          just --version || true
-          sudo apt-get update
-          sudo apt install makedeb
-          sudo apt install mist
-          makedeb just || true
-          mist just || true
-          sudo apt install just || true
+        run: snap install --edge --classic just
       - if: ${{ startsWith(matrix.os, 'windows') }}
         run: choco install just
       - if: ${{ startsWith(matrix.os, 'macos') }}
@@ -33,5 +22,5 @@ jobs:
           python-version: 3.x
       - run: pip install --upgrade pip
       - run: python -m pip install pipenv  # || curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
-      - run: python -m pipenv install
+      # - run: python -m pipenv install
       - run: just test
