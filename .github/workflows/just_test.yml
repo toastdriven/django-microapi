@@ -5,15 +5,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [macos-latest, ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
+      - if: ${{ startsWith(matrix.os, 'macos') }}
+        run: brew install just
       - if: ${{ startsWith(matrix.os, 'ubuntu') }}
         run: sudo snap install --edge --classic just
       - if: ${{ startsWith(matrix.os, 'windows') }}
         run: choco install just
-      - if: ${{ startsWith(matrix.os, 'macos') }}
-        run: brew install just
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
