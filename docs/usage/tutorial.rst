@@ -690,7 +690,7 @@ Finally, let's add updating & deleting data. These are pretty straight-forward
             return self.render({
                 "success": True,
                 "post": self.serialize(post),
-            }, status_code=http.UPDATED)
+            }, status_code=http.ACCEPTED)
 
         def delete(self, request, pk):
             if not request.user.is_authenticated:
@@ -807,7 +807,7 @@ When we've finished, our final API code should look like::
             return self.render({
                 "success": True,
                 "post": self.serialize(post),
-            }, status_code=http.UPDATED)
+            }, status_code=http.ACCEPTED)
 
         def delete(self, request, pk):
             if not request.user.is_authenticated:

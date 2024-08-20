@@ -107,7 +107,7 @@ We'll start with the similar code from the :doc:`Tutorial <tutorial>`::
             return self.render({
                 "success": True,
                 "post": self.serialize(post),
-            }, status_code=http.UPDATED)
+            }, status_code=http.ACCEPTED)
 
         def delete(self, request, pk):
             if not request.user.is_authenticated:
