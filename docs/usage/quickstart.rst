@@ -17,8 +17,6 @@ Usage
 Assuming a relatively simple blog application, with an existing ``BlogPost``
 model, we can drop the following code into a ``views.py`` (or similar)::
 
-    from django.contrib.auth.decorators import login_required
-
     # We pull in two useful classes from `microapi`.
     from microapi import ApiView, ModelSerializer
 
@@ -42,8 +40,10 @@ model, we can drop the following code into a ``views.py`` (or similar)::
             })
 
         # And handle creating a new blog post on `post`.
-        @login_required
         def post(self, request):
+            if not request.user.is_authenticated:
+                return self.render_error("You must be logged in")
+
             # Read the JSON
             data = self.read_json(request)
 

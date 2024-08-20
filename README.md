@@ -10,8 +10,6 @@ Essentially, this just provides some sugar on top of the plain old `django.views
 ## Usage
 
 ```python
-from django.contrib.auth.decorators import login_required
-
 # We pull in two useful classes from `microapi`.
 from microapi import ApiView, ModelSerializer
 
@@ -35,8 +33,10 @@ class BlogPostView(ApiView):
         })
 
     # And handle creating a new blog post on `post`.
-    @login_required
     def post(self, request):
+        if not request.user.is_authenticated:
+            return self.render_error("You must be logged in")
+
         # Read the JSON
         data = self.read_json(request)
 

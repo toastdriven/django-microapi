@@ -584,10 +584,7 @@ In most RESTful applications, the expected way to handle creating new data is to
 perform an ``HTTP POST`` to the *list* endpoint, so let's add that::
 
     # blog/api.py
-    # Don't forget to add this import!
-    from django.contrib.auth.decorators import login_required
-
-    # And this import changed!
+    # This import changed!
     from microapi import (
         ApiView,
         http,
@@ -613,8 +610,10 @@ perform an ``HTTP POST`` to the *list* endpoint, so let's add that::
             })
 
         # Here's the newly added code!
-        @login_required
         def post(self, request):
+            if not request.user.is_authenticated:
+                return self.render_error("You must be logged in")
+
             data = self.read_json(request)
 
             # TODO: Validate the data here.
@@ -674,8 +673,10 @@ Finally, let's add updating & deleting data. These are pretty straight-forward
             })
 
         # New code starts here!
-        @login_required
         def put(self, request, pk):
+            if not request.user.is_authenticated:
+                return self.render_error("You must be logged in")
+
             data = self.read_json(request)
 
             try:
@@ -691,8 +692,10 @@ Finally, let's add updating & deleting data. These are pretty straight-forward
                 "post": self.serialize(post),
             }, status_code=http.UPDATED)
 
-        @login_required
         def delete(self, request, pk):
+            if not request.user.is_authenticated:
+                return self.render_error("You must be logged in")
+
             try:
                 post = BlogPost.objects.get(pk=pk)
             except BlogPost.DoesNotExist:
@@ -719,8 +722,6 @@ Final Code
 When we've finished, our final API code should look like::
 
     # blog/api.py
-    from django.contrib.auth.decorators import login_required
-
     from microapi import (
         ApiView,
         http,
@@ -756,8 +757,10 @@ When we've finished, our final API code should look like::
                 "posts": self.serialize_many(posts),
             })
 
-        @login_required
         def post(self, request):
+            if not request.user.is_authenticated:
+                return self.render_error("You must be logged in")
+
             data = self.read_json(request)
 
             # TODO: Validate the data here.
@@ -787,8 +790,10 @@ When we've finished, our final API code should look like::
                 "post": self.serialize(post),
             })
 
-        @login_required
         def put(self, request, pk):
+            if not request.user.is_authenticated:
+                return self.render_error("You must be logged in")
+
             data = self.read_json(request)
 
             try:
@@ -804,8 +809,10 @@ When we've finished, our final API code should look like::
                 "post": self.serialize(post),
             }, status_code=http.UPDATED)
 
-        @login_required
         def delete(self, request, pk):
+            if not request.user.is_authenticated:
+                return self.render_error("You must be logged in")
+
             try:
                 post = BlogPost.objects.get(pk=pk)
             except BlogPost.DoesNotExist:

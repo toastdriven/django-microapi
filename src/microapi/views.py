@@ -23,8 +23,6 @@ class ApiView(View):
 
     Usage::
 
-        from django.contrib.auth.decorators import login_required
-
         from microapi import ApiView, ModelSerializer
 
         from .models import BlogPost
@@ -47,8 +45,10 @@ class ApiView(View):
                 })
 
             # And handle creating a new blog post on `post`.
-            @login_required
             def post(self, request):
+                if not request.user.is_authenticated:
+                    return self.render_error("You must be logged in")
+
                 # Read the JSON
                 data = self.read_json(request)
 

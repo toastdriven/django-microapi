@@ -22,8 +22,6 @@ Example Endpoint
 We'll start with the similar code from the :doc:`Tutorial <tutorial>`::
 
     # blog/api.py
-    from django.contrib.auth.decorators import login_required
-
     from microapi import (
         ApiView,
         http,
@@ -59,8 +57,10 @@ We'll start with the similar code from the :doc:`Tutorial <tutorial>`::
                 "posts": self.serialize_many(posts),
             })
 
-        @login_required
         def post(self, request):
+            if not request.user.is_authenticated:
+                return self.render_error("You must be logged in")
+
             data = self.read_json(request)
 
             # TODO: Validate the data here.
@@ -90,8 +90,10 @@ We'll start with the similar code from the :doc:`Tutorial <tutorial>`::
                 "post": self.serialize(post),
             })
 
-        @login_required
         def put(self, request, pk):
+            if not request.user.is_authenticated:
+                return self.render_error("You must be logged in")
+
             data = self.read_json(request)
 
             try:
@@ -107,8 +109,10 @@ We'll start with the similar code from the :doc:`Tutorial <tutorial>`::
                 "post": self.serialize(post),
             }, status_code=http.UPDATED)
 
-        @login_required
         def delete(self, request, pk):
+            if not request.user.is_authenticated:
+                return self.render_error("You must be logged in")
+
             try:
                 post = BlogPost.objects.get(pk=pk)
             except BlogPost.DoesNotExist:
@@ -377,9 +381,7 @@ We'll start by adding the new method to the same test case::
 
 The only substantially different code here is how we create the request via
 ``ApiTestCase.create_request``. We can provide the HTTP method to use, and the
-data to be automatically JSON-encoded for us. Since that method is protected by
-the ``login_required`` decorator, we can even supply the logged-in user making
-the request!
+data to be automatically JSON-encoded for us.
 
 Now when we run our tests, we should get back something like::
 
