@@ -1,0 +1,23 @@
+name: just_test
+on: [pull_request, push]
+jobs:
+  just_test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - if: ${{ startsWith(matrix.os, 'macos') }}
+        run: brew install just
+      - if: ${{ startsWith(matrix.os, 'ubuntu') }}
+        run: sudo snap install --edge --classic just
+      - if: ${{ startsWith(matrix.os, 'windows') }}
+        run: choco install just
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+      - run: pip install --upgrade pip
+      - run: pip install pipenv
+      - run: just test
